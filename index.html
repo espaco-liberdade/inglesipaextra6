@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aula Extra 6: Treinando o Ouvido – Discriminação Auditiva (100 Desafios)</title>
+    
+    <!-- Fontes do Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- RESET E BASE --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.5;
+            background-color: #f0f2f5;
+            color: #333;
+            -webkit-font-smoothing: antialiased;
+            padding: 20px 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        /* --- TIPOGRAFIA --- */
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2980b9;
+            line-height: 1.3;
+        }
+
+        p { font-size: 1rem; margin-bottom: 12px; color: #444; }
+        .emoji-large { font-size: 1.4rem; }
+
+        /* --- INTRODUÇÃO --- */
+        .theme-intro {
+            background-color: #ebf5fb;
+            border-left: 5px solid #2980b9;
+            padding: 20px;
+            margin: 20px 0 30px 0;
+            border-radius: 8px;
+            page-break-inside: avoid;
+        }
+
+        /* --- PLACAR E PROGRESSO --- */
+        .score-bar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* --- BOTÕES DE NAVEGAÇÃO --- */
+        .nav-btn {
+            display: block;
+            width: 100%;
+            background-color: #34495e;
+            color: white;
+            text-align: center;
+            padding: 14px;
+            margin: 15px 0 25px 0;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .nav-btn:hover { background-color: #2c3e50; }
+
+        /* --- ITENS DO QUIZ EM LINHA --- */
+        .ear-quiz-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            gap: 10px;
+            flex-wrap: wrap;
+            page-break-inside: avoid;
+        }
+
+        .row-number {
+            font-weight: 700;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            width: 35px;
+        }
+
+        .audio-main-btn {
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
+            transition: transform 0.1s, background-color 0.2s;
+            flex-shrink: 0;
+        }
+        .audio-main-btn:hover { background-color: #1f618d; }
+        .audio-main-btn:active { transform: scale(0.92); }
+
+        .options-group {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .ear-opt-btn {
+            background-color: #fff;
+            border: 2px solid #cbd5e1;
+            color: #1e293b;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .ear-opt-btn:hover:not(:disabled) {
+            border-color: #2980b9;
+            background-color: #f8fafc;
+        }
+
+        .ear-opt-btn.correct {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #166534 !important;
+        }
+
+        .ear-opt-btn.incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+
+        .ear-opt-btn:disabled {
+            cursor: default;
+        }
+
+        /* --- RESPONSIVIDADE MOBILE --- */
+        @media (max-width: 600px) {
+            .container { padding: 15px; }
+            .ear-quiz-row { flex-direction: column; align-items: stretch; gap: 8px; }
+            .options-group { justify-content: stretch; }
+            .audio-main-btn { width: 100%; border-radius: 6px; height: 38px; }
+        }
+
+        /* --- IMPRESSÃO A4 --- */
+        @media print {
+            body { background-color: #fff; padding: 0; }
+            .container { box-shadow: none; max-width: 100%; padding: 0; }
+            .nav-btn, .audio-main-btn { display: none !important; }
+            .ear-quiz-row { page-break-inside: avoid; border: 1px solid #ccc; background: #fff !important; }
+            * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- BOTÃO TOPO -->
+        <button class="nav-btn" onclick="window.location.href='https://espaco-liberdade.github.io/inglesipa/'">⬅ Voltar ao Menu Principal</button>
+        
+        <h1>Aula Extra 6: Treinando o Ouvido (Ear Training) <span class="emoji-large">🎧🎯</span><br>
+            <span style="font-size: 0.6em; font-weight: normal; color: #555;">100 Desafios de Discriminação Auditiva (Mínimos Pares e Sons Semelhantes)</span>
+        </h1>
+        
+        <div class="theme-intro">
+            <p><strong>Desenvolva um ouvido biológico treinado para o Inglês!</strong></p>
+            <p>Muitos falantes de português travam na hora de entender nativos porque confundem sons parecidos (como <em>ship</em> e <em>sheep</em>, ou <em>think</em> e <em>sink</em>).</p>
+            <p>🎯 <strong>Como funciona:</strong> Clique no botão azul de áudio 🔊 para ouvir a palavra secreta. Analise as 3 opções na mesma linha e clique na que você acha que foi dita. Se acertar, ficará verde; se errar, o som da palavra errada será emitido para você notar a diferença exata de pronúncia!</p>
+        </div>
+
+        <!-- PLACAR -->
+        <div class="score-bar">
+            <span id="scoreText">Acertos: 0 / 100</span>
+            <span id="progressText">Respondidas: 0 / 100</span>
+        </div>
+
+        <!-- CONTAINER DOS 100 EXERCÍCIOS -->
+        <div id="quizContainer"></div>
+
+        <!-- BOTÃO RODAPÉ -->
+        <button class="nav-btn" onclick="window.location.href='https://espaco-liberdade.github.io/inglesipa/'" style="margin-top: 30px;">⬅ Voltar ao Menu Principal</button>
+    </div>
+
+    <script>
+        // LISTA EXTENSA DE 100 EXERCÍCIOS DE DISCRIMINAÇÃO AUDITIVA
+        // Formato: [Palavra Certa (que toca no áudio), [Opção 1, Opção 2, Opção 3]] (Embaralhadas)
+        const rawEarData = [
+            ["ship", ["ship", "sheep", "shape"]],
+            ["sheep", ["ship", "sheep", "sleep"]],
+            ["think", ["sink", "think", "thing"]],
+            ["sink", ["think", "sink", "sing"]],
+            ["bat", ["bat", "bet", "bit"]],
+            ["bet", ["bat", "bet", "boat"]],
+            ["bit", ["beat", "bit", "bet"]],
+            ["beat", ["bit", "beat", "boot"]],
+            ["write", ["right", "white", "write"]],
+            ["right", ["write", "light", "right"]],
+            ["light", ["right", "night", "light"]],
+            ["night", ["light", "white", "night"]],
+            ["cat", ["cut", "cot", "cat"]],
+            ["cut", ["cat", "cot", "cut"]],
+            ["cot", ["cut", "cat", "cot"]],
+            ["hat", ["hut", "hot", "hat"]],
+            ["hut", ["hat", "hot", "hut"]],
+            ["hot", ["hut", "hat", "hot"]],
+            ["pen", ["pan", "pin", "pen"]],
+            ["pan", ["pen", "pin", "pain"]],
+            ["pin", ["pen", "pan", "pin"]],
+            ["ten", ["tan", "tin", "ten"]],
+            ["tan", ["ten", "tin", "ton"]],
+            ["tin", ["tan", "ten", "tin"]],
+            ["bad", ["bed", "bid", "bad"]],
+            ["bed", ["bad", "bid", "bud"]],
+            ["bid", ["bad", "bed", "bid"]],
+            ["pull", ["pool", "poll", "pull"]],
+            ["pool", ["pull", "pole", "pool"]],
+            ["full", ["fool", "fall", "full"]],
+            ["fool", ["full", "fall", "fool"]],
+            ["pet", ["pat", "pot", "pet"]],
+            ["pat", ["pet", "pot", "put"]],
+            ["pot", ["pat", "pet", "put"]],
+            ["cap", ["cup", "cop", "cap"]],
+            ["cup", ["cap", "cop", "cope"]],
+            ["cop", ["cup", "cap", "cope"]],
+            ["pack", ["peck", "puck", "pack"]],
+            ["peck", ["pack", "puck", "poke"]],
+            ["puck", ["pack", "peck", "poke"]],
+            ["lock", ["luck", "leck", "lock"]],
+            ["luck", ["lock", "leck", "lake"]],
+            ["ball", ["bowl", "bull", "ball"]],
+            ["bowl", ["ball", "bull", "bell"]],
+            ["bull", ["ball", "bowl", "bell"]],
+            ["tall", ["toll", "toil", "tall"]],
+            ["toll", ["tall", "tool", "toll"]],
+            ["tool", ["toll", "tall", "pool"]],
+            ["food", ["good", "mood", "food"]],
+            ["good", ["food", "wood", "good"]],
+            ["wood", ["good", "mood", "food"]],
+            ["look", ["lock", "luck", "look"]],
+            ["book", ["back", "buck", "book"]],
+            ["back", ["book", "buck", "beck"]],
+            ["buck", ["book", "back", "beck"]],
+            ["rack", ["rock", "ruck", "rack"]],
+            ["rock", ["rack", "ruck", "rook"]],
+            ["sack", ["sock", "suck", "sack"]],
+            ["sock", ["sack", "suck", "seek"]],
+            ["suck", ["sack", "sock", "sick"]],
+            ["tick", ["tack", "tuck", "tick"]],
+            ["tack", ["tick", "tuck", "take"]],
+            ["tuck", ["tick", "tack", "talk"]],
+            ["lick", ["lack", "luck", "lick"]],
+            ["lack", ["lick", "lock", "luck"]],
+            ["mick", ["mock", "muck", "mick"]],
+            ["mock", ["mick", "muck", "make"]],
+            ["muck", ["mock", "mick", "make"]],
+            ["rice", ["lice", "nice", "rice"]],
+            ["lice", ["rice", "nice", "lace"]],
+            ["nice", ["rice", "lice", "name"]],
+            ["rye", ["lie", "pie", "rye"]],
+            ["lie", ["rye", "pie", "fly"]],
+            ["pie", ["rye", "lie", "buy"]],
+            ["tie", ["die", "pie", "tie"]],
+            ["die", ["tie", "pie", "buy"]],
+            ["fine", ["vine", "pine", "fine"]],
+            ["vine", ["fine", "pine", "wine"]],
+            ["pine", ["fine", "vine", "pain"]],
+            ["fan", ["van", "pan", "fan"]],
+            ["van", ["fan", "pan", "ban"]],
+            ["fat", ["vat", "bat", "fat"]],
+            ["vat", ["fat", "bat", "cat"]],
+            ["fail", ["veil", "pail", "fail"]],
+            ["veil", ["fail", "pail", "whale"]],
+            ["few", ["view", "pew", "few"]],
+            ["view", ["few", "pew", "blue"]],
+            ["zoo", ["do", "too", "zoo"]],
+            ["sue", "zue", "zoo", "sue"],
+            ["thought", ["taught", "tot", "thought"]],
+            ["taught", ["thought", "tot", "taunt"]],
+            ["tot", ["thought", "taught", "pot"]],
+            ["boss", ["both", "bosh", "boss"]],
+            ["both", ["boss", "bosh", "boat"]],
+            ["mass", ["math", "mash", "mass"]],
+            ["math", ["mass", "mash", "moth"]],
+            ["pass", ["path", "pash", "pass"]],
+            ["path", ["pass", "pash", "poth"]]
+        ];
+
+        let score = 0;
+        let answeredCount = 0;
+        const totalQuestions = rawEarData.length;
+
+        // Função para embaralhar array (Fisher-Yates)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        const container = document.getElementById('quizContainer');
+        let htmlOutput = '';
+
+        rawEarData.forEach((item, index) => {
+            const correctWord = item[0];
+            // Embaralha as 3 opções para não ficarem sempre na mesma ordem
+            const options = shuffleArray([...item[1]]);
+
+            htmlOutput += `
+            <div class="ear-quiz-row" id="row-${index}">
+                <span class="row-number">#${index + 1}</span>
+                <button class="audio-main-btn" onclick="playAudio('${correctWord}')" title="Ouvir palavra secreta">🔊</button>
+                <div class="options-group">
+                    <button class="ear-opt-btn" onclick="checkEarAnswer(${index}, '${options[0]}', '${correctWord}', this)">${options[0]}</button>
+                    <button class="ear-opt-btn" onclick="checkEarAnswer(${index}, '${options[1]}', '${correctWord}', this)">${options[1]}</button>
+                    <button class="ear-opt-btn" onclick="checkEarAnswer(${index}, '${options[2]}', '${correctWord}', this)">${options[2]}</button>
+                </div>
+            </div>`;
+        });
+
+        container.innerHTML = htmlOutput;
+
+        // LÓGICA DE VERIFICAÇÃO DA RESPOSTA
+        function checkEarAnswer(rowIndex, selectedWord, correctWord, buttonElement) {
+            const rowDiv = document.getElementById(`row-${rowIndex}`);
+            const allButtons = rowDiv.querySelectorAll('.ear-opt-btn');
+
+            // Toca o som da palavra que o usuário clicou (para ele ouvir a errada ou a certa)
+            playAudio(selectedWord);
+
+            // Desabilita todos os botões desta linha após a escolha
+            allButtons.forEach(btn => btn.disabled = true);
+
+            if (selectedWord === correctWord) {
+                buttonElement.classList.add('correct');
+                score++;
+            } else {
+                buttonElement.classList.add('incorrect');
+                // Destaca qual era a correta em verde
+                allButtons.forEach(btn => {
+                    if (btn.textContent.trim() === correctWord) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+
+            answeredCount++;
+            updateScoreBoard();
+        }
+
+        function updateScoreBoard() {
+            document.getElementById('scoreText').textContent = `Acertos: ${score} / ${totalQuestions}`;
+            document.getElementById('progressText').textContent = `Respondidas: ${answeredCount} / ${totalQuestions}`;
+        }
+
+        // SCRIPT DE VOZ (WEB SPEECH API)
+        let voices = [];
+        function loadVoices() { voices = window.speechSynthesis.getVoices(); }
+        loadVoices();
+        if (window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
+        function playAudio(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.8; // Um pouco mais devagar para treinar o ouvido
+                utterance.pitch = 1;
+
+                if (voices.length === 0) loadVoices();
+                let targetVoice = voices.find(voice => 
+                    (voice.name.includes('Google') || voice.name.includes('Premium') || voice.name.includes('Samantha')) 
+                    && voice.lang.includes('en-US')
+                );
+                if (!targetVoice) targetVoice = voices.find(voice => voice.lang === 'en-US');
+                if (!targetVoice) targetVoice = voices.find(voice => voice.lang.startsWith('en'));
+
+                if (targetVoice) {
+                    utterance.voice = targetVoice;
+                    utterance.lang = targetVoice.lang;
+                } else {
+                    utterance.lang = 'en-US';
+                }
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+    </script>
+</body>
+</html>
